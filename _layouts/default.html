@@ -1,57 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="author" content="{{ site.name }}" />
-    <meta name="description" content="{{ site.description }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% if page.title %} {{ page.title }} {% else %} {{ site.name }} {% endif %}</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/print.css" media="print">
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+        <!-- Bootstrap core CSS -->
+      <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Jeff Wilson by rjpw</title>
-  </head>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
 
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Jeff Wilson</h1>
-        <h2>Developer Notes</h2>
-        <a href="https://github.com/rjpw" class="button"><small>Follow me on</small> GitHub</a>
+    </head>
+    <body>
+
+    <div class="container">
+
+      <div class="col-sm-3">
+
+        <a href="/"><img src="/img/logo.png" height="128px" width="128px" /></a><br />
+
+        <a href="/">Developer Notes</a> <br />
+
+        {% for i in site.data.urls %}
+          {% if i.newpage %}
+            <a class="about" href="{{ i.url }}" target="_">{{ i.text }}</a><br />
+          {% else %}
+            <a class="about" href="{{ i.url }}">{{ i.text }}</a><br />
+          {% endif %}
+        {% endfor %}
+
+        {% if site.about %}
+        <div id="about">
+          <strong>about</strong><br />
+          {{ site.about }}
+        </div>
+        {% endif %}
+
       </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+      <div class="col-sm-8 col-offset-1">
 
-          <div id="main" role="main" class="container">
-            {{ content }}
-          </div>
+        {{ content }}
 
-        </section>
-
-        <aside id="sidebar">
-
-          <ul>
-            {% for post in site.posts %}
-              <li>
-                <a href="{{ post.url }}">{{ post.title }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-
-        </aside>
+        <footer>
+          &copy; {{ site.name }}
+          {% if site.github %}
+            - <a href="{{ site.github }}">{{ site.github }}</a>
+          {% endif %}
+        </footer>
       </div>
+
     </div>
 
-
-  </body>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>

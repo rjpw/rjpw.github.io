@@ -4,13 +4,8 @@ layout: default
 
 <article class="post">
   <h1>{{ page.title }}</h1>
-
-  <div class="entry">
+  <span class="time">{{ page.date | date_to_string }}</span>
+  <div class="content">
     {{ content }}
   </div>
-
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-  </div>
-
 </article>
