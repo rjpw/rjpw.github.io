@@ -22,6 +22,7 @@ bundle exec jekyll serve
 * [GitHub Pages Basics](https://help.github.com/articles/using-jekyll-with-pages/)
 * [Github Pages Recipe](http://24ways.org/2013/get-started-with-github-pages/)
 * [Development Seed on GH Pages](http://www.developmentseed.org/blog/2011/09/09/jekyll-github-pages/)
+* [Jekyll Tags and Categories](http://www.minddust.com/post/tags-and-categories-on-github-pages/)
 
 ## Themes
 
