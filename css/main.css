@@ -4,6 +4,7 @@
  * //////////////
  */
 body {
+    background-color:#ffffff;
     color: #424242;
 }
 
@@ -94,8 +95,26 @@ div.content pre {
     font-size: 12px;
 }
 
-div.content .highlight {
-	background: #333333;
+div.content .highlight pre code * {
+    white-space: nowrap;
+}
+
+div.content .highlight pre {
+    overflow-x: auto;
+}
+
+div.content .highlight pre code {
+    white-space: pre;
+}
+
+div.content .highlight pre, pre, .highlight .hll {
+    background-color: #333333;
+    padding: 5px 10px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    overflow: hidden;
+    border: 1px solid #ccc;
 }
 
 footer {
