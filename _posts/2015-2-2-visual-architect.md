@@ -28,7 +28,7 @@ One solution that is experiencing a re-emergence of popularity and interest driv
 
 ## Example (Part I) - RESTful API for MIDI Controller
 
-For our upcoming example, we will design a RESTful API for a motorized [Behringer USB/MIDI Controller](http://www.behringer.com/EN/Products/BCF2000.aspx). Note that REST stands for Representational State Transfer, a design strategy that employs the HTTP protocol for server APIs based on resource names and small set of simple operations, e.g. GET, PUT, POST, DELETE. We'll use the GET command to allow local and remote users to read the control positions, and we will use the PUT command to let local users update the MIDI values (remote users attempting to PUT will see "Permission Denied"). Ultimately we will use our API to control a parallel coordinates visualization.
+For our upcoming example, we will design a RESTful API for a motorized [Behringer USB/MIDI Controller](http://www.behringer.com/EN/Products/BCF2000.aspx). Note that REST stands for Representational State Transfer, a design strategy that employs the HTTP protocol for server APIs based on resource names and a small set of simple operations, e.g. GET, PUT, POST, DELETE. We'll use the GET command to allow local and remote users to read the control positions, and we will use the PUT command to let local users update the MIDI values (remote users attempting to PUT will see "Permission Denied"). Ultimately we will use our API to control a parallel coordinates visualization.
 
 ![In the lab]({{site.url}}/img/demo2_sm.jpg)
 
@@ -56,11 +56,11 @@ We want to use the variable "msg.format" for a downstream Switch node, so we def
 
 ![Configure Function]({{site.url}}/img/hello_FN.png)
 
-We continue by dragging a Switch node onto the canvas and configuring it as shown. You can define as many outputs as you want. In our case we need two: one for XML and the other (the default case) for JSON.
+We have decided to support both XML and JSON in our API. We could have used our input function to define two outputs, but there's an easier way. Node-RED comes with nodes that simply apply transformations to what they find in *msg.payload*. To create two streams, we will branch with a Switch node by dragging one onto the canvas and configuring it as shown. You can define as many outputs as you want. In our case we need two: one for XML and the other (the default case) for JSON.
 
 ![Configure Switch]({{site.url}}/img/hello_switch.png)
 
-Finally we connect the outputs of the switch to XML and JSON output nodes (no configuration required), and those nodes in turn are fed to an HTTP output node. The final workflow looks like this.
+Finally we connect the outputs of the switch to the inputs of the XML and JSON output nodes (no configuration required), and then their output is in turn fed into an HTTP output node. The final workflow looks like this.
 
 ![Flow Demo]({{site.url}}/img/hello_flow.png)
 
@@ -78,7 +78,9 @@ curl http://localhost:1880/api2/hello/readers?format=xml
 </root>
 {% endhighlight %}
 
-This time I will specify format = "json":
+Recall that we had defined a JavaScript object in *msg.payload*, with properties *status* and *message*, and now these are serialized as an XML string.
+
+To test the other format, this time I will specify format = "json" at the command line:
 
 {% highlight console %}
 curl http://localhost:1880/api2/hello/readers?format=json
@@ -91,7 +93,9 @@ curl http://localhost:1880/api2/hello/readers?format=json
 }
 {% endhighlight %}
 
-Seems like it works. Node-RED has already saved this into your personal workspace, and it will be there the next time you start the server. If you want to share this workflow with others you can easily serialize it by using their export function. This is what that looks like, a little "prettified" for this blog post.
+The output is a JSON serialization, as requested.
+
+Node-RED has already saved this into your personal workspace, and it will be there the next time you start the server. If you want to share this workflow with others you can easily serialize it by using their export function. This is what that looks like, a little "prettified" for this blog post. Try copying and pasting it it into a blank canvas.
 
 {% highlight json %}
 [{
