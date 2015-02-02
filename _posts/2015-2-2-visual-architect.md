@@ -136,7 +136,9 @@ Node-RED has already saved this into your personal workspace, and it will be the
 {% endhighlight %}
 
 
-If you have gone ahead and downloaded Node-RED for yourself you'll notice my blank workspace has some input nodes that don't ship with the default installation. New node definitions can be added by following the instructions [here](http://nodered.org/docs/creating-nodes/). Since Node-RED is based on NodeJS, we will get our MIDI signals via the NodeJS RtMIDI wrapper project [node-midi](https://github.com/justinlatimer/node-midi). The following NodeJS console script gives us a good starting point:
+If you have gone ahead and downloaded Node-RED for yourself you'll notice that my blank workspace has some input nodes that don't ship with the default installation (all the ones so far definitely are there). If you were to copy and paste a workflow containing undefined node types, Node-RED would let you save and deploy your workspace but then it would produce console errors indicating which node types were missing.
+
+New node definitions can be added by following the instructions [here](http://nodered.org/docs/creating-nodes/). We will be doing that when we continue our MIDI example. For a quick preview, since Node-RED is based on NodeJS, we will get our MIDI signals via the NodeJS RtMIDI wrapper project [node-midi](https://github.com/justinlatimer/node-midi). The following NodeJS console script gives us a good starting point:
 
 {% highlight javascript %}
 var midi = require('midi'), input = new midi.input();
