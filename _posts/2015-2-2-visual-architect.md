@@ -95,7 +95,7 @@ curl http://localhost:1880/api2/hello/readers?format=json
 
 The output is a JSON serialization, as requested.
 
-Node-RED has already saved this into your personal workspace, and it will be there the next time you start the server. If you want to share this workflow with others you can easily serialize it by using their export function. This is what that looks like, a little "prettified" for this blog post. Try copying and pasting it it into a blank canvas.
+Node-RED has already saved this into your personal workspace, and it will be there the next time you start the server. If you want to share this workflow with others you can easily serialize it by using their export function. This is what that looks like, a little "prettified" for this blog post. Try copying and pasting it using the "Import from ... Clipboard" feature of Node-RED (found under the "double hamburger" icon, upper-right), but please note that you will need to make it a little less pretty by removing the carriage return in the function definition in the second node. Apparently we paid a price for prettification.
 
 {% highlight json %}
 [{
