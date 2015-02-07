@@ -13,7 +13,7 @@ It should be repeated that there are other -- perhaps better -- ways besides a R
 
 If we want to start off with the default node types defined by Node-RED, we can wrap the midi test code from Part I in a bi-directional UDP facade, then sneak the whole thing into Node-RED's global context. Here is the updated script called "midiforwarder.js".
 
-Lines 12 and 13 open the MIDI device for input and output. If your device is on a different port you can change that on line 3. Lines 16-19 forward MIDI messages to a UDP port that we can put into our visual workflow. Node-RED's UDP input supports Buffers, simple strings, or base64 encoded strings. We have chosen to use a buffer since this is nice and compact, and it makes it easy to parse in our workflow. Lines 22-24 will let define a UDP node that ultimately writes to the MIDI device. You may notice a distinct lack of error checking here. We will be handling that responsibility in the visual editor.
+Lines 12 and 13 open the MIDI device for input and output. If your device is on a different port you can change that on line 3. Lines 16-19 forward MIDI messages to a UDP port that we can put into our visual workflow. Node-RED's UDP input supports Buffers, simple strings, or base64 encoded strings. We have chosen to use a buffer since this is nice and compact, and it makes it easy to parse in our workflow. Lines 22-24 will us let define a UDP node that ultimately writes to the MIDI device. You may notice a distinct lack of error checking here. We will be handling that responsibility as our API prototype evolves, but first we'll focus on basic functionality.
 
 {% highlight javascript linenos=table %}
 var dgram = require('dgram')
