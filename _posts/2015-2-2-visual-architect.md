@@ -138,7 +138,7 @@ Node-RED has already saved this into your personal workspace, and it will be the
 
 If you have gone ahead and downloaded Node-RED for yourself you'll notice that my blank workspace has some input nodes that don't ship with the default installation (all the ones so far definitely are there). If you were to copy and paste a workflow containing undefined node types, Node-RED would let you save and deploy your workspace but then it would produce console errors indicating which node types were missing.
 
-New node definitions can be added by following the instructions [here](http://nodered.org/docs/creating-nodes/). We will be doing that when we continue our MIDI example. For a quick preview, since Node-RED is based on NodeJS, we will get our MIDI signals via the NodeJS RtMIDI wrapper project [node-midi](https://github.com/justinlatimer/node-midi). The following NodeJS console script gives us a good starting point:
+New node definitions can be added by following the instructions [here](http://nodered.org/docs/creating-nodes/). We will eventually be doing that after we write our first prototype MIDI API. For a quick preview of interacting with MIDI in NodeJS, we will try to get our MIDI signals via the NodeJS RtMIDI wrapper project [node-midi](https://github.com/justinlatimer/node-midi). The following NodeJS console script gives us a good starting point:
 
 {% highlight javascript %}
 var midi = require('midi'), input = new midi.input();
@@ -158,10 +158,14 @@ message: 176,81,1
 message: 176,81,0
 {% endhighlight %}
 
-In Part II we'll see how to build a new node definition and then incorporate it into a RESTful API.
+In [Part II]({% post_url 2015-2-7-visual-architect-ii %}) we'll see how to incorporate our script into a RESTful API.
 
-## <a name="Resources"></a>Resources
+## <a name="Resources"></a>Resources and Links
 
+* [NodeJS](http://nodejs.org/)
 * [Node-RED](http://nodered.org/)
+* [Behringer BCF2000](http://www.behringer.com/EN/Products/BCF2000.aspx)
+* [node-midi](https://github.com/justinlatimer/node-midi)
+* [Wizard-of-Oz](http://www.usabilitybok.org/wizard-of-oz)
 * [NoFlo](http://noflojs.org/)
 * [Video: Flow-Based Programming Using JavaScript](https://www.youtube.com/watch?v=hot_0Kn-xJE)

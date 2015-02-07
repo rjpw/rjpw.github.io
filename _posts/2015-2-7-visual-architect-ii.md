@@ -347,3 +347,8 @@ After a little cleanup our RESTful, database-backed, motorized MIDI controller p
 
 ![Whole API]({{site.url}}/img/entire_api.png)
 
+## <a name="Resources"></a>Resources and Links
+
+* [Node-RED](http://nodered.org/)
+* [Writing Functions in Node-RED](http://nodered.org/docs/writing-functions.html)
+* [MongoDB](http://www.mongodb.org/)
