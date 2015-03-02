@@ -60,7 +60,7 @@ When considering applications in these wider usage contexts it becomes useful to
 
 ## Example - D3 meets React and Angular
 
-In an example to come soon, we will combine D3 for visualization with React for stateless rendering and Angular for application coordination. For a preview of the concepts follow [this link](https://egghead.io/lessons/integrating-components-with-d3-and-angularjs) to a video of a whirlwind coding sesion from Joe Maddalone of Egghead.io where he deftly pulls together exactly these technologies.
+In an example to come soon, we will combine D3 for visualization with React for stateless rendering and Angular for application coordination. For a preview of the concepts follow [this link](https://egghead.io/lessons/integrating-components-with-d3-and-angularjs) to a video of a whirlwind coding session from Joe Maddalone of Egghead.io where he deftly pulls together exactly these technologies.
 
 <!---
 Discuss the need to understand the value of visualization lifecycle and *Immediate* vs *Retained* Mode rendering.
