@@ -1,7 +1,8 @@
 (function () {
 
   // clear out the noscript placeholder
-  var el = document.querySelector("#vis1");
+  var elementID = '#vis1';
+  var el = document.querySelector(elementID);
   el.innerHTML = '';
 
   var dataFunc = function (n) {
@@ -32,7 +33,7 @@
       .startAngle(0)
       .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
 
-  var svg = d3.select("#vis1").append("svg")
+  var svg = d3.select(elementID).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
