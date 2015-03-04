@@ -23,7 +23,7 @@ To illustrate the notion of interaction state we borrow an example from the site
 
 ![Nutrient Explorer]({{site.url}}/img/nutrient_explorer.png)
 
-In a simpler example below, brushing is used to define a subset of one dimension of the data. The selected values are highlighted by, in this case, applying or removing a CSS class that paints a dot red (see <a href="http://bl.ocks.org/mbostock/6498000" target="_">the author's demo</a> and <a href="https://gist.github.com/mbostock/6498000" target="_">source</a>).
+In a simpler example below from <a href="http://bl.ocks.org/mbostock/6498000" target="_">Mike Bostock on bl.ocks.org</a>, brushing is used to define a subset of one dimension of the data. The selected values are highlighted by, in this case, applying or removing a CSS class that paints a dot red.
 
 <div id="vis1">
   <noscript>
