@@ -1,5 +1,5 @@
 ---
-title: RESTful API Prototyping - Part I
+title: RESTful API Prototyping
 layout: post
 ---
 
@@ -158,7 +158,7 @@ message: 176,81,1
 message: 176,81,0
 {% endhighlight %}
 
-In [Part II]({% post_url 2015-2-7-visual-architect-ii %}) we'll see how to incorporate our script into a RESTful API.
+In [the next post]({% post_url 2015-2-7-MIDI-API %}) we'll see how to incorporate our script into a RESTful API.
 
 ## <a name="Resources"></a>Resources and Links
 

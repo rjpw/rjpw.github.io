@@ -1,5 +1,5 @@
 ---
-title: Managing Visualization State - Part II
+title: Using D3 with Angular and React
 layout: post
 css: /css/vis1.css
 scripts:
@@ -8,13 +8,13 @@ scripts:
   - /js/demos/vis3.js
 ---
 
-## Intro to Part II
+## Introduction
 
-This is a continuation of a series on Managing Visualization State. For the full article including background and context please start with [Part I]({% post_url 2015-3-2-managing-visualization-state %}).
+This post builds on a discussion started last week on managing visualization state. For some more context please see [last week's post]({% post_url 2015-3-2-managing-visualization-state %}).
 
 ## Example - D3 meets React and Angular
 
-We start by revisiting (and revising) the simple brushing visualization from Mike Bostock introduced in Part I of this article.
+We start by revisiting (and revising) a simple brushing visualization from Mike Bostock introduced as an example of user interaction with data-driven visualizations.
 
 <div id="vis1">
   <noscript>
@@ -145,7 +145,7 @@ Block|Line(s)|Feature
 
 Now let's take a look at the code from the perspective of user interaction. You'll notice that very few of the blocks in this code are expected to be run in response to user events. Only the *brushmove* function fits the bill (defined in block 15). The rest of this code, 14 of 15 blocks, runs in response to one single event: the initial page load.
 
-How should we proceed if we need to dynamically react to the wider range of events? We introduced a few such scenarios in [Part I]({% post_url 2015-3-2-managing-visualization-state %}), for example axis and scale changes, undo/redo, etc. Any answer must be aware of the the lifecycle of HTML and/or SVG elements rendered to our application's DOM.
+How should we proceed if we need to dynamically react to the wider range of events? We introduced a few such scenarios [last week]({% post_url 2015-3-2-managing-visualization-state %}), for example axis and scale changes, undo/redo, etc. Any answer must be aware of the the lifecycle of HTML and/or SVG elements rendered to our application's DOM.
 
 Taking the *stateful* approach (a.k.a. *retained* mode) to solving this question the developer would need to consider which DOM elements were created at page load and then insert/modify/delete them appropriately. This is a good news/bad news story. The *good news* is that this is precisely what D3 offers. The *bad news* is that they have to anticipate exactly the kinds of changes that might be expected and then write D3 code to manage them. This can start out as a simple matter, but then eventually, as more interactive features are added, it can devolve into wrestling match against their own perfectly reasonable early design decisions.
 
@@ -153,7 +153,9 @@ If instead the developer takes a *stateless* approach (a.k.a. *immediate* mode),
 
 Designing single-page apps with *retained mode* can be compared to designing a state machine with side-effects, where the particular action required at any moment depends on the present state of the machine (the view) and the type and content of any update event that triggers a change. Designing with *immediate mode* can be compared to writing a pure mathematical function, the goal of which is to compute the view at any time as a function of the current state. It is easy to see why the latter approach lends itself well to features like undo/redo, as it becomes a simple matter of pointing to one of a series of remembered states.
 
-The code segments below show part of a shortened version of the visualization written for ReactJS. The full code is unfortunately quite a bit larger than the D3 example, in fact spanning a few files, but from this partial example we can see a few important things. First, we appreciate that we're building using components, which is a terrific way to solidify a conceptual model of our code. In this case our components are named for the major SVG structures. These include *VisBase* for the SVG and a main group, *DataGroup* for rendering the points, and *BrushGroup* for rendering the brushes. We can also see that there is no special code to determine what to do during the application lifecycle. The render code is always the same. It will run each time the application state changes, which we will do whenever the data values change or when the brush is updated. The blocks starting with *React.createElement* don't repeatedly add elements to a web page, but rather they create a virtual element to be compared with the last rendering in the DOM. Finally, you may notice that the logical structure of the application is enforced at build time using the *require* keyword used by the code that builds the full application.
+## Sample code
+
+The code segments below show part of our experiment writing visualizations with Angular and React. The full code is unfortunately quite a bit larger than the D3 example, in fact spanning a few files, but from this partial example we can see a few important things. First, we appreciate that we're building using components, which is a terrific way to solidify a conceptual model of our code. In this case our components are named for the major SVG structures. These include *VisBase* for the SVG and a main group, *DataGroup* for rendering the points, and *BrushGroup* for rendering the brushes. We can also see that there is no special code to determine what to do during the application lifecycle. The render code is always the same. It will run each time the application state changes, which we will do whenever the data values change or when the brush is updated. The blocks starting with *React.createElement* don't repeatedly add elements to a web page, but rather they create a virtual element to be compared with the last rendering in the DOM. Finally, you may notice that the logical structure of the application can be traced by means of following the *require* keyword. This serves a function similar to *include* in other languages, and should ultimately allow us to build new applications from reusable modules and components.
 
 The code samples below show the part of the visualization that paints the dots. It was derived partly from a similar blog post on the topic, entitled [D3 and React - the future of charting components?](http://10consulting.com/2014/02/19/d3-plus-reactjs-for-charting/)
 
@@ -241,9 +243,8 @@ var BrushDemo = React.createClass({displayName: 'BrushDemo',
 module.exports = BrushDemo;
 {% endhighlight %}
 
-Heading down the dependencies, this code renders the SVG tag and creates a group where the rest of the child elements are added. That's where you see *this.props.children* below, and those consist of the *DataGroup* and *BrushGroup* above.
+Heading down the dependencies, this next module called *visbase.js* renders the SVG tag and creates a group where the rest of the child elements are added. That's where you see *this.props.children* below, and those children consist of the *DataGroup* and *BrushGroup* above.
 
-### Code for the SVG foundation of the visualization
 {% highlight javascript %}
 var React = require('react');
 
@@ -269,7 +270,7 @@ var VisBase = React.createClass({displayName: 'VisBase',
 module.exports = VisBase;
 {% endhighlight %}
 
-We keep going deeper to show the DataGroup. Again we just add child elements, using functions to make rendering decisions like whether or not to render a dot as *selected*.
+We keep going deeper to show the DataGroup. Again we just add child elements, using functions to make rendering decisions such as whether or not to render a dot as *selected*.
 
 {% highlight javascript %}
 var React = require('react');
@@ -302,7 +303,7 @@ var DataGroup = React.createClass({displayName: 'DataGroup',
 module.exports = DataGroup;
 {% endhighlight %}
 
-Finally the dots themselves are shown as circles.
+Finally the dots themselves are rendered as circles, applying a CSS class if the *selected* property is true.
 
 {% highlight javascript %}
 var React = require('react');
@@ -426,11 +427,11 @@ There is *some* D3 code in this example, but the vast majority of the code is wr
 
 ## Discussion
 
-The exercise of build this example demonstrates that it's possible to use Angular, React, and D3 to build a custom visualization, but were we satisfied with the result? One might point out that there are clearly much more code than the D3 version, and that's a bit worrisome since more code usually means more issues. But to bring things back to our table, where we looked at the fifteen blocks of code, there is one thing that we know. The code to render our visualization will perform the rendering steps you see defined above *whenever* a change to state is made, and this will make it easy to change the appearance of the display in future iterations.
+This exercise demonstrates that it's possible to use Angular, React, and D3 to build a custom visualization, but were we satisfied with the result? There is more code than the D3-only version at the top of this post, and that's a bit worrisome since more lines of code usually bring more issues. But I might point out that some of this additional code is inevitable since we are reproducing features previously handled by D3, only this time we're following an *immediate mode* pattern. It may be too early to tell exactly where this approach will lead, but I have written enough *retained mode* visualizations to suspect there will be a payoff when it comes to adding new features.
 
-I would venture to say that it's too early to tell if we've reached something new and useful, but I think it might be. We'll need to take our example a little farther to get a full appreciation for all the pros and cons. For example, we should broaden our example to see how well this approach scales. At this moment we only have one custom visualization on the page. What if there were hundreds? We also will want to see if the extra code was actually useful in other places. Could any of the parts be reused?
+To get a full appreciation for all the pros and cons of immediate mode we'll need to take this example a little farther. We will also test how well this approach scales. At this moment we only have one such visualization on the page. What if there were hundreds? We will take the time to refactor what we've written, paying attention to how state propagates into visualizations. Along the way we'll explore additional inputs, wiring up other event sources like web sockets and Leap Motion controllers.
 
-In spite of these questions and reservations, I still think that using a component-based visualization architecture definitely feels like we're heading in the right direction. In fact there are other web development frameworks and languages like [Om](https://github.com/omcljs/om), [elm](http://elm-lang.org/) and [Ractive.js](http://www.ractivejs.org/) that also use virtual DOM approaches, and with some of them being guided by the need for interactive visualizations it's likely that they will . This example may be a kind of bricolage by comparison, but there are enough applications built on these architectural blocks that the effort was definitely worth it.
+In spite of these upcoming challenges I still think that using a component-based visualization architecture definitely feels like we're heading in the right direction. In fact there are other web development frameworks and languages like [Om](https://github.com/omcljs/om), [elm](http://elm-lang.org/) and [Ractive.js](http://www.ractivejs.org/) that also use virtual DOM approaches, and with some of them being guided by the need for interactive visualizations it's likely that writing with these tools would lead to more elegant solutions. Our example here may look like bricolage by comparison, but there are enough applications in the world built on these architectural blocks that the effort was definitely worth it.
 
 In future we will take a cue from the functional programming approach used in those libraries, and look into libraries like BaconJS or RxJS to propagate change throughout the UI based on state. And of course we should also make use of our MIDI API and other unusual event sources to see how easy it is to incorporate them.
 

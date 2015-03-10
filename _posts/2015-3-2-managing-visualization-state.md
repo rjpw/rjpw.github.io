@@ -1,5 +1,5 @@
 ---
-title: Managing Visualization State - Part I
+title: Managing Visualization State
 layout: post
 css: /css/vis1.css
 scripts:
@@ -40,7 +40,7 @@ But now we go beyond the intentionally simplified rendering in Bostock's example
 
 Each of these potential features would require associated state, the maintenance of which could be made local to the feature (as is the case above) or more usefully it could be held in a more central data structure to make it possible to inform other aspects of the page like the lists of food groups or specific dishes we see in Chang's Nutrition Explorer.
 
-But these examples still only cover events local to the visualization. Imagine a system design where one user's brush arrangement represents just one submission in a larger collaborative real-time system, and before updating the actual display the user's individual input is averaged with those of other users connected to a server. Maybe our collaborative visualization is connected to a mix of virtual and physical devices (see RESTful API Prototyping [Part I]({% post_url 2015-2-2-visual-architect %}) and [Part II]({% post_url 2015-2-7-visual-architect-ii %})), raising again the question of which collaborative data repositories or devices are considered sources of ultimate truth. In such cases the need for thoughtfully managing state becomes paramount.
+But these examples still only cover events local to the visualization. Imagine a system design where one user's brush arrangement represents just one submission in a larger collaborative real-time system, and before updating the actual display the user's individual input is averaged with those of other users connected to a server. Maybe our collaborative visualization is connected to a mix of virtual and physical devices (see earlier posts on [RESTful API Prototyping]({% post_url 2015-2-2-visual-architect %}) and [MIDI API]({% post_url 2015-2-7-MIDI-API %})), raising again the question of which collaborative data repositories or devices are considered sources of ultimate truth. In such cases the need for thoughtfully managing state becomes paramount.
 
 ## Solution
 
