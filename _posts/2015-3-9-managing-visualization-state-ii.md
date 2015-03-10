@@ -153,9 +153,12 @@ If instead the developer takes a *stateless* approach (a.k.a. *immediate* mode),
 
 Designing single-page apps with *retained mode* can be compared to designing a state machine with side-effects, where the particular action required at any moment depends on the present state of the machine (the view) and the type and content of any update event that triggers a change. Designing with *immediate mode* can be compared to writing a pure mathematical function, the goal of which is to compute the view at any time as a function of the current state. It is easy to see why the latter approach lends itself well to features like undo/redo, as it becomes a simple matter of pointing to one of a series of remembered states.
 
-The code below shows part of a shortened version of the visualization written for ReactJS. The full code is unfortunately quite a bit larger than the D3 example, in fact spanning a few files, but from this example can see a few important things. First, we can see that we're building components, which is a terrific way to build a UI. In this case our components are named for the major SVG structures. These include *VisBase* for the SVG and a main group, *DataGroup* for rendering the points, and *BrushGroup* for rendering the brushes. We can also see that there is no special code to determine what to do during the application lifecycle. The render code is always the same. It will run each time the application state changes, which we will do whenever the data values change or when the brush is updated. The blocks starting with *React.createElement* don't repeatedly add elements to a web page, but rather they create a virtual element to be compared with the last rendering in the DOM. Finally, you may notice that the logical structure of the application is enforced at build time using the *require* keyword used by the code that builds the full application.
+The code segments below show part of a shortened version of the visualization written for ReactJS. The full code is unfortunately quite a bit larger than the D3 example, in fact spanning a few files, but from this partial example we can see a few important things. First, we appreciate that we're building using components, which is a terrific way to solidify a conceptual model of our code. In this case our components are named for the major SVG structures. These include *VisBase* for the SVG and a main group, *DataGroup* for rendering the points, and *BrushGroup* for rendering the brushes. We can also see that there is no special code to determine what to do during the application lifecycle. The render code is always the same. It will run each time the application state changes, which we will do whenever the data values change or when the brush is updated. The blocks starting with *React.createElement* don't repeatedly add elements to a web page, but rather they create a virtual element to be compared with the last rendering in the DOM. Finally, you may notice that the logical structure of the application is enforced at build time using the *require* keyword used by the code that builds the full application.
 
-### Snippet showing main module of React version
+The code samples below show the part of the visualization that paints the dots. It was derived partly from a similar blog post on the topic, entitled [D3 and React - the future of charting components?](http://10consulting.com/2014/02/19/d3-plus-reactjs-for-charting/)
+
+This is the component written in React for rendering the visualization. In fact, what you're seeing is the result of running the *jsx* command on the original code that includes HTML-like tags, but this code would have been just as easy to write.
+
 {% highlight javascript %}
 var React = require('react');
 var d3 = require('d3');
@@ -180,7 +183,6 @@ var BrushDemo = React.createClass({displayName: 'BrushDemo',
       margin: marginBase,
       brush: [0.3, 0.5],
       xScale: d3.scale.linear().range([0, innerWidth ]),
-      dragScale: d3.scale.linear().range([0, innerWidth * 1.4 ]),
       yScale: d3.scale.linear().range([innerHeight, 0]),
       scope: {},
       dragging: false,
@@ -239,7 +241,168 @@ var BrushDemo = React.createClass({displayName: 'BrushDemo',
 module.exports = BrushDemo;
 {% endhighlight %}
 
-Here is the AngularJS HTML code that we'll use to attach this little application to our page. Notice the attributes of the *reactchart* directive, a feature that already lets us do a little on-the-fly customization of the visualization.
+Heading down the dependencies, this code renders the SVG tag and creates a group where the rest of the child elements are added. That's where you see *this.props.children* below, and those consist of the *DataGroup* and *BrushGroup* above.
+
+### Code for the SVG foundation of the visualization
+{% highlight javascript %}
+var React = require('react');
+
+var VisBase = React.createClass({displayName: 'VisBase',
+  render: function() {
+
+    var translate = 'translate(' +
+      this.props.margin.left + ',' +
+      this.props.margin.top + ')';
+
+    return (
+      React.createElement("div", null,
+        React.createElement("svg", {
+          width: this.props.width,
+          height: this.props.height},
+          React.createElement("g", {transform: translate}, this.props.children)
+        )
+      )
+    );
+  }
+});
+
+module.exports = VisBase;
+{% endhighlight %}
+
+We keep going deeper to show the DataGroup. Again we just add child elements, using functions to make rendering decisions like whether or not to render a dot as *selected*.
+
+{% highlight javascript %}
+var React = require('react');
+var DataPoint = require('./datapoint');
+
+var DataGroup = React.createClass({displayName: 'DataGroup',
+
+  render: function () {
+
+    var props = this.props
+      , xFunc = props.xScale
+      , yFunc = props.yScale
+      , selectedFunc = function(d) { return props.brush[0] <= d.x && d.x <= props.brush[1]; }
+      , childElements = {};
+
+    props.data.map( function (point, i) {
+      childElements['dp_' + i] = React.createElement(DataPoint, {
+        height:  props.height,
+        width:  props.width,
+        value:  [xFunc(point.x), yFunc(point.y)],
+        selected:  selectedFunc(point) })
+    });
+
+    return (React.createElement("g", {className: "dots"}, childElements));
+
+  }
+
+});
+
+module.exports = DataGroup;
+{% endhighlight %}
+
+Finally the dots themselves are shown as circles.
+
+{% highlight javascript %}
+var React = require('react');
+
+var DataPoint = React.createClass({displayName: 'DataPoint',
+
+  getDefaultProps: function() {
+    return { value: [0,0], radius: 3.5, selected: false }
+  },
+
+  render: function() {
+    var selClass = this.props.selected ? "selected" : "";
+    var itemTranslate = 'translate(' + this.props.value[0] + ',' + this.props.value[1] + ')';
+    return (React.createElement("circle", {r: this.props.radius,
+      className: selClass, transform: itemTranslate}));
+  }
+
+});
+
+module.exports = DataPoint;
+{% endhighlight %}
+
+This isn't the whole visualization, but by now you can see that there is a fair bit more code than the D3 version. Clearly we don't get our solution for free, but hopefully the extra effort will pay off in more flexible use of code in the future.
+
+The next part of the code breaks away from the visualization inself, and delves into the AngularJS part of the code. This is the entry point for Browserify's compilation, and it knits the whole application together.
+
+{% highlight javascript %}
+var angular = require('angular');
+var AppController = require('./components/appcontroller');
+var ChartDirective = require('./components/reactchartdirective');
+
+var app = angular.module('ARD3', [])
+  .directive('reactchart', ChartDirective)
+  .controller('appController', AppController);
+
+module.exports = app;
+{% endhighlight %}
+
+We refer to the app controller in our code, but it's currently only there as an empty AngularJS requirement. The more interesting code is the AngularJS directive that delegates its rendering to the React visualization code we saw above.
+
+{% highlight javascript %}
+var React = require('react');
+var BrushDemo = React.createFactory(require('./brushdemo'));
+var _ = require('underscore');
+
+var ReactChartDirective = function () {
+  return {
+
+    restrict: 'E',
+
+    scope: {data:'=',
+      chartwidth:'@',
+      chartheight:'@',
+      id:'@'
+    },
+
+    link: function (scope, elem, attrs) {
+
+      scope.brushDemo = React.render(BrushDemo({
+        data: scope.data,
+        target: scope.id,
+        width: scope.chartwidth,
+        height: scope.chartheight}),
+      elem[0]);
+
+      scope.brushDemo.setState({scope: scope, data:scope.data});
+
+    },
+
+    controller: function ($http, $scope, $interval) {
+
+      var intervalHandle = $interval(refreshData, 5000);
+
+      function randomIntFromInterval(min,max) {
+        return Math.floor(Math.random()*(max-min+1)+min);
+      }
+
+      var generateData = function () {
+        return _.range(randomIntFromInterval(50, 250)).map(function () {
+          return {x: Math.random(), y: Math.random()};
+        });
+      }
+
+      function refreshData() {
+        $scope.data = generateData();
+        $scope.brushDemo.setState({data: $scope.data});
+      }
+
+      // some initial values to start
+      $scope.data = generateData();
+
+    }
+
+  }
+};
+
+module.exports = ReactChartDirective;
+{% endhighlight %}
+
+This AngularJS directive lets us attach a *reactchart* to our page like we see below. Notice the attributes of the *reactchart* tag, a feature that already lets us do a little on-the-fly customization of the visualization.
 
 {% highlight html %}
 <div id="nghome" ng-app='ARD3'>
@@ -259,10 +422,21 @@ We still have some work to do yet to tidy up this code and finish porting the ex
   </div>
 </div>
 
-There is *some* D3 code in this example, but the vast majority of the code is written in React. This is best done with their JSX variant of JavaScript, which in turn means including a JSX interpreter on your web page or running a build step. We chose to go with the latter approach, using [Gulp](http://gulpjs.com/) and [Browserify](http://browserify.org/) to perform the build. The project source code will be posted to GitHub in the coming days, along with a post explaining the structure.
+There is *some* D3 code in this example, but the vast majority of the code is written in React. This is best done with their JSX variant of JavaScript, which in turn means including a JSX interpreter on your web page or generating ES5-compliant JavaScript by running some kind of build step. We chose to go with the latter approach, using [Gulp](http://gulpjs.com/) and [Browserify](http://browserify.org/) to convert JSX code into JavaScript. There are several good reasons besides code conversion when deciding whether or not to make use of a build tool to construct your application. They can perform a range of tasks like dependency checking, code linting, minification, etc. Once we have a more complete application we will post the source code for generating it on this GitHub account.
+
+## Discussion
+
+The exercise of build this example demonstrates that it's possible to use Angular, React, and D3 to build a custom visualization, but were we satisfied with the result? One might point out that there are clearly much more code than the D3 version, and that's a bit worrisome since more code usually means more issues. But part of this extra code comes from doing manually what D3 did for us. I would venture to say that it's too early to tell if we've haven't got somewhere new and useful. We'll need to take our example a little farther to get a full appreciation for all the pros and cons. For example, we should broaden our example to see how well this approach scales. At this moment we only have one custom visualization on the page. What if there were hundreds? We also will want to see if the extra code was actually useful in other places. Could any of the parts be reused?
+
+In spite of these questions and reservations, I still think that using a component-based visualization architecture definitely feels like we're heading in the right direction. In fact there are other web development frameworks and languages like [Om](https://github.com/omcljs/om), [elm](http://elm-lang.org/) and [Ractive.js](http://www.ractivejs.org/) that also use virtual DOM approaches, and with some of them being guided by the need for interactive visualizations it's likely that they will . This example may be a kind of bricolage by comparison, but there are enough applications built on these architectural blocks that the effort was definitely worth it.
+
+In future we will take a cue from the functional programming approach used in those libraries, and look into libraries like BaconJS or RxJS to propagate change throughout the UI based on state. And of course we should also make use of our MIDI API and other unusual event sources to see how easy it is to incorporate them.
 
 ## <a name="Resources"></a>Resources and Links
 
 * [Browserify](http://browserify.org/)
 * [Gulp](http://gulpjs.com/)
 * [Gulp Starter Project](https://github.com/greypants/gulp-starter)
+* [Om](https://github.com/omcljs/om)
+* [elm](http://elm-lang.org/)
+* [Ractive.js](http://www.ractivejs.org/)
