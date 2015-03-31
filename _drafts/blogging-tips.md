@@ -17,6 +17,12 @@ jekyll server --watch
 bundle exec jekyll serve
 ```
 
+### Include Drafts
+
+```sh
+bundle exec jekyll serve --drafts
+```
+
 ## Tips
 
 * [GitHub Pages Basics](https://help.github.com/articles/using-jekyll-with-pages/)
