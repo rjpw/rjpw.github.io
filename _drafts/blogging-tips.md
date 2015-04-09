@@ -37,3 +37,11 @@ bundle exec jekyll serve --drafts
 * [jekyll-clean](https://github.com/scotte/jekyll-clean)
 * [poole](https://github.com/poole/poole)
 
+## Design Tips
+
+* [UI-Patterns](http://ui-patterns.com)
+
+## Great Site Examples
+* [Google Ventures](http://www.gv.com)
+
+
