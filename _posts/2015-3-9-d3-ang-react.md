@@ -1,7 +1,7 @@
 ---
 title: Using D3 with Angular and React
 layout: post
-css: /css/vis1.css
+css: /public/css/vis1.css
 scripts:
   - /js/vendor/d3/d3.min.js
   - /js/demos/vis2.js

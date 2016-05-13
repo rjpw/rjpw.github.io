@@ -15,7 +15,7 @@ If we want to start off with the default node types defined by Node-RED, we can 
 
 Lines 12 and 13 open the MIDI device for input and output. If your device is on a different port you can change that on line 3. Lines 16-19 forward MIDI messages to a UDP port that we can put into our visual workflow. Node-RED's UDP input supports Buffers, simple strings, or base64 encoded strings. We have chosen to use a buffer since this is nice and compact, and it makes it easy to parse in our workflow. Lines 22-24 will let us define a UDP node that ultimately writes to the MIDI device. You may notice a distinct lack of error checking here. We will be handling that responsibility as our API prototype evolves, but first we'll focus on basic functionality.
 
-{% highlight javascript linenos=table %}
+{% highlight javascript linenos %}
 var dgram = require('dgram')
   , midi = require('midi')
   , midiPort = 1
@@ -56,7 +56,7 @@ Then you would add our MIDI UDP forwarder into Node-RED by including a little sn
 
 Once you have made this change to the settings file you will have to restart Node-RED.
 
-{% highlight javascript linenos=table %}
+{% highlight javascript linenos %}
 module.exports = {
 
   // [... top of file skipped for compactness ...]
@@ -245,7 +245,7 @@ The functions defined earlier all assumed a single output. When we add our new f
 
 This changes how we write the function. Instead of creating (or modifying) a single *msg* object, we define an array of three objects, named *outputs* in the code below. Each element of this array corresponds to one of the output connection points on the right side of the function node, counting top to bottom. In our code we use constants to help keep track of the purpose of each message element. The comments in the code help explain what's going on. Notice that we're only allowing *localhost* to perform updates using the API.
 
-{% highlight javascript linenos=table %}
+{% highlight javascript linenos %}
 var outputs = [], TO_DB = 0, TO_HTTP = 1, TO_MIDI = 2;
 
 var control = +msg.req.params.control;

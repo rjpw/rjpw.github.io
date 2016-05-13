@@ -1,78 +1,21 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{% if page.title %} {{ page.title }} {% else %} {{ site.name }} {% endif %}</title>
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en-us">
 
-      <!-- syntax highlighting CSS -->
-      <link rel="stylesheet" href="/css/syntax.css">
+  {% include head.html %}
 
-      <!-- Bootstrap core CSS -->
-      <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <body class="theme-base-rjpw">
 
-      <!-- Custom CSS -->
-      <link rel="stylesheet" href="/css/main.css">
+    {% include sidebar.html %}
 
-      <!-- Page-Specific CSS -->
-      {% if page.css %}
-        <link rel="stylesheet" href="{{ page.css }}">
-      {% endif %}
-
-    </head>
-    <body>
-
-    <div class="container">
-
-      <div class="col-sm-3">
-
-        <a href="/"><img id="Logo" /></a><br />
-
-        <a href="/">{{ site.description }}</a> <br />
-
-        {% for i in site.data.urls %}
-          {% if i.newpage %}
-            <a class="about" href="{{ i.url }}" target="_">{{ i.text }}</a><br />
-          {% else %}
-            <a class="about" href="{{ i.url }}">{{ i.text }}</a><br />
-          {% endif %}
-        {% endfor %}
-
-        {% if site.about %}
-        <div id="about">
-          <strong>about</strong><br />
-          {{ site.about }}
-        </div>
-        {% endif %}
-
-      </div>
-
-      <div class="col-sm-8 col-offset-1">
-
-        {{ content }}
-
-        <footer>
-          &copy; {{ site.name }}
-          {% if site.github %}
-            - <a href="{{ site.github }}">{{ site.github }}</a>
-          {% endif %}
-        </footer>
-      </div>
-
+    <div class="content container">
+      {{ content }}
     </div>
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="/js/vendor/bootstrap/bootstrap.min.js"></script>
 
     <!-- load last to ensure dependencies are in place -->
     {% for s in page.scripts %}
       <script src="{{ s }}"></script>
     {% endfor %}
 
-    </body>
+
+  </body>
 </html>
