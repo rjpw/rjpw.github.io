@@ -1,5 +1,28 @@
-highlighter: pygments
-paginate: 5
-name: RJPW
-description: RJPW Developer Notes
-github: https://github.com/rjpw
+# Dependencies
+markdown:         kramdown
+highlighter:      rouge
+
+gems: [jekyll-paginate]
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: false
+
+# Setup
+title:            RJPW
+tagline:          'On the Stack'
+description:      'Exploring full-stack web development usability and security.'
+url:              http://rjpw.github.io
+baseurl:          /
+
+author:
+  name:           'Jeff Wilson'
+  url:            https://twitter.com/rjpwilson
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           https://github.com/rjpw

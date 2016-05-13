@@ -7,6 +7,21 @@ layout: post
 
 ### Run Jekyll and Rebuild Automatically
 
+From the root of this project:
+
+````sh
+gem install bundler
+bundle install
+````
+
+Or update gem, bundle, etc:
+
+````sh
+gem install rubygems-update
+rubygems-update
+bundle update
+````
+
 ```sh
 jekyll server --watch
 ```
