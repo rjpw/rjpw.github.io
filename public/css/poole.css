@@ -181,9 +181,6 @@ pre code {
 figure.highlight {
   margin-left: 0px;
   margin-right: 0px;
-  .pre {
-    padding: 0;
-  }
 }
 /* Pygments via Rouge */
 .highlight {
@@ -362,7 +359,7 @@ tbody tr:nth-child(odd) th {
 
 .page,
 .post {
-  margin-bottom: 4em;
+  margin-bottom: 2em;
 }
 
 /* Blog post or page title */

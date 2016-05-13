@@ -24,8 +24,8 @@ var dgram = require('dgram')
   , host = 'localhost'
   , workflowInput = dgram.createSocket("udp4")
   , workflowOutput = dgram.createSocket("udp4")
-  , workflowInputPort = 41234   // UDP ports chosen arbitrarily. If these are
-  , workflowOutputPort = 41235; // taken on your system then modify as needed.
+  , workflowInputPort = 41234   // ports chosen arbitrarily
+  , workflowOutputPort = 41235; // modify as desired
 
 fromMidi.openPort(midiPort);
 toMidi.openPort(midiPort);
@@ -132,7 +132,7 @@ var buf = msg.payload;  // input from UDP MIDI is a Buffer object
 
 // msg.payload is the record we want stored in MongoDB
 msg.payload = {
-  _id: 'bcf2000_' + buf.readUInt8(1),  // define the _id to prevent Mongo node from adding its own
+  _id: 'bcf2000_' + buf.readUInt8(1),  // define the _id to for MongoDB
   source: 'device',                    // distinguish source of update for later
   value: buf.readUInt8(2),             // retrieve value from UDP message
   updated: new Date()                  // keep track of time
@@ -254,7 +254,8 @@ var value = +msg.req.params.value;
 // allow only the local machine to update our hardware
 if (msg.req.ip !== '127.0.0.1') {
 
-  // prevent output to DB and MIDI (null values stop propagation of events)
+  // prevent output to DB and MIDI 
+  // (null values stop propagation of events)
   outputs[TO_DB] = null;
   outputs[TO_MIDI] = null;
 
