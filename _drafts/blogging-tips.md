@@ -34,8 +34,21 @@ bundle exec jekyll serve --drafts
 ## Themes
 
 * [jekyllthemes](http://jekyllthemes.org/)
+
+# My favourite themes
+
 * [jekyll-clean](https://github.com/scotte/jekyll-clean)
 * [poole](https://github.com/poole/poole)
+* [gaya](https://github.com/gayanvirajith/gaya)
+* [slim pickens](http://chrisanthropic.github.io/slim-pickins-jekyll-theme/)
+* [harmony](http://gayan.me/harmony/)
+* [GridGallery](http://nadjetey.github.io/GridGallery/)
+
+# Octopress themes
+
+* [ji-octopress-theme](https://github.com/ivanjovanovic/ji-octopress-theme)
+* [Octoflat](https://github.com/alexgaribay/octoflat)
+* [octopress-design](https://github.com/geeksoflondon/octopress-design)
 
 ## Design Tips
 

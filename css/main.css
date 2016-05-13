@@ -8,6 +8,15 @@ body {
     color: #424242;
 }
 
+#Logo {
+    background: url('/img/rjpw.jpg');
+    border-radius: 128px;
+    width: 128px;
+    height: 128px;
+    background-size: 128px;
+    background-position: center;
+}
+
 @media only screen and (min-width: 1824px) {
   .container {
     max-width: 1440px;
