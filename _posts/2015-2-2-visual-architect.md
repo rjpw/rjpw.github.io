@@ -5,7 +5,7 @@ layout: post
 
 ## Problem
 
-When building web application prototypes there is value in rapid redesign on both clients and servers. Can we make it easy for client programmers to tinker with server prototypes?
+When building new web application prototypes there is value in rapid redesign on both clients and servers. Can we make it easy for client programmers to tinker with server prototypes?
 
 ## Context
 
